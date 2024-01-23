@@ -31,3 +31,23 @@ class DBStorage:
 
         if env == 'test':
             Base.metadata.drop_all(self.__engine)
+
+    def all(self, cls=None):
+        """ show all data """
+        if cls:
+            objs = self.__session.query(cls).all()
+
+        else:
+            classes = [State, City, User, Place, Review, Amenity]
+            objs = []
+            for _class in classes:
+                objs += self.__session.query(_class)
+
+        """create and save data"""
+        new_dict = {}
+
+        for obj in objs:
+            key = '{}.{}'.format(type(obj).__name__, obj.id)
+            new_dict[key] = obj
+
+        return new_dict
