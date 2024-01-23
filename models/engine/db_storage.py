@@ -62,4 +62,8 @@ class DBStorage:
         database session"""
         self.__session.commit()
 
-    
+    def delete(self, obj=None):
+        """Delete from the current database"""
+        if obj:
+            self.__session.delete(obj)
+
