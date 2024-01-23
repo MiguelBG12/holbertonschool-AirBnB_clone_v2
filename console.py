@@ -128,7 +128,7 @@ class HBNBCommand(cmd.Cmd):
             parameter_key, parameter_value = value.split("=")
             if (parameter_value[0] == '"'):
                 var_to_replace = parameter_value[1:-1].replace("_", " ")
-                input_dict[parameter_key] =var_to_replace
+                input_dict[parameter_key] = var_to_replace
             elif '.' in parameter_value:
                 parameter_value = float(parameter_value)
                 input_dict[parameter_key] = parameter_value
@@ -203,7 +203,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -307,6 +307,7 @@ class HBNBCommand(cmd.Cmd):
                 att_val = args[2].partition(' ')[0]
 
             args = [att_name, att_val]
+
 
         # retrieve dictionary of current objects
         new_dict = storage.all()[key]
