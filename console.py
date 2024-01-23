@@ -308,7 +308,6 @@ class HBNBCommand(cmd.Cmd):
 
             args = [att_name, att_val]
 
-
         # retrieve dictionary of current objects
         new_dict = storage.all()[key]
 
@@ -336,6 +335,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
