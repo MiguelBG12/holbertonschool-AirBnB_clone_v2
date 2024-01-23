@@ -51,3 +51,8 @@ class DBStorage:
             new_dict[key] = obj
 
         return new_dict
+
+    def new(self, obj):
+        """Add the object in the databse"""
+        if obj:
+            self.__session.add(obj)
