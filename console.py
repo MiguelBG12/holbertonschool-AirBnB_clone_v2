@@ -115,47 +115,42 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, argument):
+    def do_create(self, args):
         """ Create an object of any class"""
-        arg_split = argument.split(" ")
-        if not argument:
+        if not args:
             print("** class name missing **")
             return
-        elif arg_split[0] not in HBNBCommand.classes:
+
+        class_name, *parameters = args.split(" ")
+
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
 
-        # Initialize an empty dictionary to store attribute key-value pairs
-        input_dict = {}
+        new_instance = HBNBCommand.classes[class_name]()
 
-        # Split the argument into a list of attribute assignments
-        parameter_split = arg_split[1:]
-        
-        # Iterate over the attribute assignments
-        for value in parameter_split:
-            parameter_key, parameter_value = value.split("=")
-            # Handle different types of values (int, float, str)
-            if parameter_value[0] == '"':
-                var_to_replace = parameter_value[1:-1].replace("_", " ")
-                input_dict[parameter_key] = var_to_replace
-            elif '.' in parameter_value:
-                parameter_value = float(parameter_value)
-                input_dict[parameter_key] = parameter_value
-            else:
-                parameter_value = int(parameter_value)
-                input_dict[parameter_key] = parameter_value
+        for parameter in parameters:
+            key, value = parameter.split("=")
 
-        # Check the storage type and create an instance accordingly
-        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-            new_instance = HBNBCommand.classes[arg_split[0]](**input_dict)
-        else:
-            new_instance = HBNBCommand.classes[arg_split[0]]()
-            new_instance.__dict__.update(input_dict)
+            if hasattr(new_instance, key):
+                if value.startswith('"') and value.endswith('"'):
+                    value = value[1:-1]
+                    value = value.replace('"', r'\"').replace('_', " ")
+                elif "." in value:
+                    if "@" not in value:
+                        try:
+                            value = float(value)
+                        except ValueError:
+                            continue
+                else:
+                    try:
+                        value = int(value)
+                    except ValueError:
+                        continue
+                setattr(new_instance, key, value)
 
-        # Add the new instance to the storage
-        storage.new(new_instance)
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
 
 
     def help_create(self):
