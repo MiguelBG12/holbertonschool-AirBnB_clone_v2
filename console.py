@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 """ Console Module """
+import os
+from os import getenv
 import cmd
 import sys
 from models.base_model import BaseModel
@@ -117,7 +119,7 @@ class HBNBCommand(cmd.Cmd):
         """ Create an object of any class"""
         arg_split = argument.split(" ")
         if not argument:
-            print("** class name missing **")
+            print("** class name missing **") 
             return
         elif arg_split[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
@@ -216,17 +218,20 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
         print_list = []
-
+        if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+            storeFile = storage.all(eval(args))
+        else:
+            storeFile = storage._FileStorage__objects
         if args:
-            args = args.split(' ')[0]  # remove possible trailing args
+            args = args.split(' ')[0]
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storeFile.items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
