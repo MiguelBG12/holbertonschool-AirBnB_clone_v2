@@ -138,21 +138,15 @@ class HBNBCommand(cmd.Cmd):
                     if value.startswith('"') and value.endswith('"'):
                         value = value[1:-1].replace(r'\"', '"').replace('_', " ")
                     elif "." in value and "@" not in value:
-                        value_as_float = None
                         try:
-                            value_as_float = float(value)
+                            value = float(value)
                         except ValueError:
                             pass
-                        if value_as_float is not None:
-                            value = value_as_float
                     else:
-                        value_as_int = None
                         try:
-                            value_as_int = int(value)
+                            value = int(value)
                         except ValueError:
                             pass
-                        if value_as_int is not None:
-                            value = value_as_int
 
                     setattr(new_instance, key, value)
 
