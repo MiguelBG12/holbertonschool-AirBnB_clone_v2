@@ -120,9 +120,7 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-
         class_name, *parameters = args.split(" ")
-
         if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
