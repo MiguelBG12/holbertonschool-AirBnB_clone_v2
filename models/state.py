@@ -17,9 +17,15 @@ class State(BaseModel, Base):
     else:
         @property
         def cities(self):
-            """ Getter attribute cities """
-            listCities = []
-            for city in models.storage.all(City).values():
-                if city.state_id == self.id:
-                    listCities.append(city)
-            return listCities
+            """ Getter attribute cities for FileStorage """
+            list_cities = []
+            
+            # Check if City class is defined in the models module
+            if 'City' in dir(models):
+                City = models.City
+
+                # Filter cities with matching state_id
+                list_cities = [city for city in models.storage.all(City).values() if city.state_id == self.id]
+
+            return list_cities
+
