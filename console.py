@@ -116,7 +116,7 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
+        """Create an object of any class"""
         if not args:
             print("** class name missing **")
             return
@@ -127,31 +127,40 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
 
-        new_instance = HBNBCommand.classes[class_name]()
+        try:
+            new_instance = HBNBCommand.classes[class_name]()
 
-        for parameter in parameters:
-            key, value = parameter.split("=")
+            for parameter in parameters:
+                key, value = parameter.split("=")
 
-            if hasattr(new_instance, key):
-                if value.startswith('"') and value.endswith('"'):
-                    value = value[1:-1]
-                    value = value.replace('"', r'\"').replace('_', " ")
-                elif "." in value:
-                    if "@" not in value:
+                if hasattr(new_instance, key):
+                    # Improves handling of quoted strings
+                    if value.startswith('"') and value.endswith('"'):
+                        value = value[1:-1].replace(r'\"', '"').replace('_', " ")
+                    elif "." in value and "@" not in value:
+                        value_as_float = None
                         try:
-                            value = float(value)
+                            value_as_float = float(value)
                         except ValueError:
-                            continue
-                else:
-                    try:
-                        value = int(value)
-                    except ValueError:
-                        continue
-                setattr(new_instance, key, value)
+                            pass
+                        if value_as_float is not None:
+                            value = value_as_float
+                    else:
+                        value_as_int = None
+                        try:
+                            value_as_int = int(value)
+                        except ValueError:
+                            pass
+                        if value_as_int is not None:
+                            value = value_as_int
 
-        new_instance.save()
-        print(new_instance.id)
+                    setattr(new_instance, key, value)
 
+            new_instance.save()
+            print(new_instance.id)
+
+        except Exception as e:
+            print(f"Error creating instance: {str(e)}")
 
     def help_create(self):
         """ Help information for the create method """
