@@ -1,4 +1,5 @@
 from sqlalchemy import Column, String
+from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
 
 class User(BaseModel, Base):
@@ -18,3 +19,5 @@ class User(BaseModel, Base):
 
     """ Column for last name (up to 128 characters, nullable) """
     last_name = Column(String(128), nullable=True)
+
+    places = relationship('Place', cascade='all, delete-orphan', back_populates='user')
