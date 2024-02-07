@@ -20,6 +20,7 @@ def hi_route():
     # Returns a message "HBNB" when the route '/hbnb' is accessed
     return "HBNB"
 
+
 # Defines a route '/c/<text>' and the corresponding view function c_route
 @app.route('/c/<text>', strict_slashes=False)
 def c_route(text):
