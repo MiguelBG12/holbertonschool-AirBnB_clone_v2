@@ -56,3 +56,7 @@ class FileStorage:
         if obj is not None:
             key = obj.to_dict()['__class__'] + '.' + obj.id
             self.__objects.pop(key, None)
+
+    def close(self):
+        """Close the current session and reload data from the JSON file"""
+        self.reload()
