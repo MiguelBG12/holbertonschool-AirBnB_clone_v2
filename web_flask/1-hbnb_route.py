@@ -7,14 +7,14 @@ from flask import Flask
 app = Flask(__name__)
 
 
-"""Defines a route '/' and the corresponding view function hello_route"""
+# Defines a route '/' and the corresponding view function hello_route
 @app.route('/', strict_slashes=False)
 def hello_route():
     # Returns a simple greeting message
     return "Hello HBNB!"
 
 
-"""Defines a route '/hbnb' and the corresponding view function hi_route"""
+# Defines a route '/hbnb' and the corresponding view function hi_route
 @app.route('/hbnb', strict_slashes=False)
 def hi_route():
     # Returns a message "HBNB" when the route '/hbnb' is accessed
