@@ -29,13 +29,13 @@ def c_route(text):
     return f'C {text}'
 
 
-# Defines routes '/python/' and '/python/<text>' with the view function python_route
+# Defines routes with the view function python_route
 @app.route('/python/', strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
 def python_route(text="is_cool"):
     # Replaces underscores with spaces in the text parameter
     text = text.replace("_", " ")
-    # Returns a formatted message including the text parameter, defaulting to "is cool" if not provided
+    # Returns a formatted message including the text parameter
     return f'Python {text}'
 
 
