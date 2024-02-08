@@ -32,3 +32,17 @@ else:
                         city_list.append(city)
                 return city_list
 
+            def __init__(self, *args, **kwargs):
+                """Inicializa un nuevo State"""
+                super().__init__(*args, **kwargs)
+
+            @property
+            def cities(self):
+                """Getter attribute to return list of 'City' objects from 'storage'
+                linked to the current 'State'
+                """
+                city_list = []
+                for city in models.storage.all(City).values():
+                    if city.state_id == self.id:
+                        city_list.append(city)
+                return city_list
