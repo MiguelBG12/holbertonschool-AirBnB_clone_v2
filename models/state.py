@@ -7,20 +7,19 @@ import os
 import models
 
 
-if os.getenv("HBNB_TYPE_STORAGE") == "db":
-    class State(BaseModel, Base):
-        """ State class """
+class State(BaseModel):
+    """ State class """
+    name = ""
+
+    if os.getenv("HBNB_TYPE_STORAGE") == "db":
         __tablename__ = 'states'
         name = Column(String(128), nullable=False)
         cities = relationship("City", backref="state", cascade="all, delete")
 
-else:
-    class State(BaseModel):
-        name = ""
-
+    else:
         @property
         def cities(self):
-            "return the list of instances from City"
+            """ Getter attribute to return the list of instances from City """
             from models.city import City
             list_cities = []
             for city in models.storage.all(City).values():
