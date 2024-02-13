@@ -24,14 +24,17 @@ class State(BaseModel, Base):
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
 
-    storage = getenv("HBNB_TYPE_STORAGE", default="fs")
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.storage = getenv("HBNB_TYPE_STORAGE", default="fs")
 
-    if storage == 'fs':
-        @property
-        def cities(self):
-            """Return the list of City objects linked to the current State"""
-            all_cities = models.storage.all()
-            return [city for city in all_cities.values() if isinstance(city, models.City) and city.state_id == self.id]
+        if self.storage == 'fs':
+            @property
+    
+            def cities(self):
+                """Return the list of City objects linked to the current State"""
+                all_cities = models.storage.all()
+                return [city for city in all_cities.values() if isinstance(city, models.City) and city.state_id == self.id]
 
-    elif storage == 'db':
-        cities = relationship('City', backref='state', cascade='all, delete')
+        elif self.storage == 'db':
+            cities = relationship('City', backref='state', cascade='all, delete')
