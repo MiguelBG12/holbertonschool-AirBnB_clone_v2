@@ -77,5 +77,5 @@ class DBStorage:
         self.__session = Session()
 
     def close(self):
-        """Closes the current session and commits any changes to database"""
+        """Closes the current session and commits any changes to the database"""
         self.__session.close()
