@@ -21,26 +21,17 @@ class State(BaseModel, Base):
         name (sqlalchemy String): The name of the State.
         cities (sqlalchemy relationship): The State-City relationship.
     """
-    storage = getenv("HBNB_TYPE_STORAGE")
-
-    if storage is None:
-        storage = "fs"
-
     __tablename__ = "states"
     name = Column(String(128), nullable=False)
+
+    storage = getenv("HBNB_TYPE_STORAGE", default="fs")
 
     if storage == 'fs':
         @property
         def cities(self):
-            """Devuelve las ciudades del estado actual"""
-            var = models.storage.all()
-            result = []
-            print(f"Current state ID: {self.id}")
-            for obj in var.values():
-                print(f"Object ID: {obj.id}, Type: {type(obj)}")
-                if isinstance(obj, models.City) and obj.state_id == self.id:
-                    result.append(obj)
-            return result
+            """Return the list of City objects linked to the current State"""
+            all_cities = models.storage.all()
+            return [city for city in all_cities.values() if isinstance(city, models.City) and city.state_id == self.id]
 
-    if storage == 'db':
+    elif storage == 'db':
         cities = relationship('City', backref='state', cascade='all, delete')
