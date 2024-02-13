@@ -31,19 +31,13 @@ class State(BaseModel, Base):
     if storage == 'fs':
         @property
         def cities(self):
-            """return the cities of the current state"""
+            """Devuelve las ciudades del estado actual"""
             var = models.storage.all()
-            lista = []
             result = []
-            for key in var:
-                city = key.replace('.', ' ')
-                city = shlex.split(city)
-                if (city[0] == 'City'):
-                    lista.append(var[key])
-            for elem in lista:
-                if (elem.state_id == self.id):
-                    result.append(elem)
-            return (result)
+            for obj in var.values():
+                if isinstance(obj, models.City) and obj.state_id == self.id:
+                    result.append(obj)
+            return result
 
     if storage == 'db':
         cities = relationship('City', backref='state', cascade='all, delete')
