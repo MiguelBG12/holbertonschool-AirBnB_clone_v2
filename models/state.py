@@ -35,7 +35,9 @@ class State(BaseModel, Base):
             """Devuelve las ciudades del estado actual"""
             var = models.storage.all()
             result = []
+            print(f"Current state ID: {self.id}")
             for obj in var.values():
+                print(f"Object ID: {obj.id}, Type: {type(obj)}")
                 if isinstance(obj, models.City) and obj.state_id == self.id:
                     result.append(obj)
             return result
