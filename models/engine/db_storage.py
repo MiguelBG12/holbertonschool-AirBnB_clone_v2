@@ -82,4 +82,5 @@ class DBStorage():
 
     def close(self):
         """Closes the current session and commits any changes to database"""
+        self.__session.commit()
         self.__session.close()
