@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ State Module for HBNB project """
 import os
-import models
+from models import storage
 
 if os.getenv("HBNB_TYPE_STORAGE") == "db":
     from sqlalchemy import Column, String
@@ -25,9 +25,8 @@ else:
         def cities(self):
             """Return the list of City objects linked to the current State"""
             city_list = []
-            all_cities = models.storage.all("City")
+            all_cities = storage.all("City")
             for city in all_cities.values():
                 if city.state_id == self.id:
                     city_list.append(city)
             return city_list
-
