@@ -19,13 +19,6 @@ class DBStorage():
     """connect to MySQL database"""
     __engine = None
     __session = None
-    #  __user = os.getenv("HBNB_MYSQL_USER")
-    #  __passwd = os.getenv("HBNB_MYSQL_PWD")
-    #  __host = os.getenv("HBNB_MYSQL_HOST")
-    #  __db = os.getenv("HBNB_MYSQL_DB")
-    #  __dialect = "mysql"
-    #  __driver = "mysqldb"
-    #  __SQL_str = "{}+{}://{}:{}@{}/{}"
 
     def __init__(self):
         self.__engine = create_engine("{}+{}://{}:{}@{}/{}".
@@ -84,3 +77,4 @@ class DBStorage():
         """Closes the current session and commits any changes to database"""
         self.__session.commit()
         self.__session.close()
+        self.reload()
